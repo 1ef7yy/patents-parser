@@ -36,7 +36,15 @@ class PatentsParser:
         title = patent.find_element(By.CSS_SELECTOR, "a.snippet-title").text
         link = patent.find_element(By.CSS_SELECTOR, "a.snippet-title").get_attribute("href")
         id = patent.find_element(By.CSS_SELECTOR, "span.subtitle-item.subtitle-item__desktop.subtitle-item__url").text.replace(" ", '')
-        author = patent.find_elements(By.CSS_SELECTOR, "span.subtitle-item.subtitle-item__desktop.subtitle-item__minor")[-1].text.replace(" • ", '') if len(patent.find_elements(By.CSS_SELECTOR, "span.subtitle-item.subtitle-item__desktop.subtitle-item__minor")) >= 1 else None
+
+        minor = patent.find_elements(By.CSS_SELECTOR, "span.subtitle-item.subtitle-item__desktop.subtitle-item__minor")
+        if len(minor) == 1:
+            author = minor[0].text.replace(" • ", '') 
+        elif len(minor) > 1:
+            author = minor[-1].text.replace(" • ", '') 
+
+        else:
+            author = None
         dates = patent.find_elements(By.CSS_SELECTOR, "span.date-item__desktop")
         commit_date = dates[0].text
         publication_date = dates[1].text if len(dates) > 1 else None

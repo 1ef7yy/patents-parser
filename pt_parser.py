@@ -24,11 +24,24 @@ class PatentsParser:
 
 
     def get_data(self, patent):
+        title = patent.find_element(By.CSS_SELECTOR, "a.snippet-title").text
         link = patent.find_element(By.CSS_SELECTOR, "a.snippet-title").get_attribute("href")
-
+        id = patent.find_element(By.CSS_SELECTOR, "span.subtitle-item.subtitle-item__desktop.subtitle-item__url").text.replace(" ", '')
+        author = patent.find_elements(By.CSS_SELECTOR, "span.subtitle-item.subtitle-item__desktop.subtitle-item__minor")[-1].text.replace(" • ", '')
+        dates = patent.find_elements(By.CSS_SELECTOR, "span.date-item__desktop")
+        commit_date = dates[0].text
+        publication_date = dates[1].text
+        start_date = dates[2].text if len(dates) >= 3 else None
+        
 
         return {
-            "link": link
+            "title": title,
+            "link": link,
+            "id": id,
+            "author": author,
+            "commit": commit_date,
+            "publication": publication_date,
+            "start": start_date
         }
     
 
@@ -49,8 +62,3 @@ class PatentsParser:
     
         
 
-
-
-my_parser = PatentsParser("оружие", 3)
-
-print(len(my_parser.test()))

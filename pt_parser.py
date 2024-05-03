@@ -61,14 +61,12 @@ class PatentsParser:
     
 
     def parse(self):
-        self.driver.get(self.link)
-        time.sleep(5)
-
-        for page in range(1, self.pages+1):
-            patents = self.get_patents()
-            for patent in patents:
-                self.patents.append(self.get_data(patent))
-
-            self.get_page(page+1, 0)
-
+        self.patents = []
+        patents = self.get_patents()
+        for patent in patents:
+            self.patents.append(self.get_data(patent))
         return self.patents
+        
+        
+            
+             
